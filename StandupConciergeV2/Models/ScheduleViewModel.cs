@@ -7,11 +7,12 @@ namespace StandUpConceirge.Models
 {
     public class ScheduleViewModel
     {
-        public int ID { get; set; }
-        [Required]
-        public DateTime? StartDay { get; set; }
-        [Required]
-        public TimeSpan? TimeOccur { get; set; }
+        public int Id { get; set; }
+        public DateTime? date { get; set; }
+        public DateTime? time { get; set; }
+        public string frequency { get; set; }
+        public string day { get; set; }
+        public int? ScheduleId { get; set; }
         public bool Monday { get; set; }
         public bool Tuesday { get; set; }
         public bool Wednesday { get; set; }
@@ -19,11 +20,7 @@ namespace StandUpConceirge.Models
         public bool Friday { get; set; }
         public bool Saturday { get; set; }
         public bool Sunday { get; set; }
-        public string Creator { get; set; }
-        public int? ScheduleId { get; set; }
 
-        [Required]
-        public string FrequencyOccur { get; set; }
         [Required]
         public string WelcomeMsg { get; set; }
         [NotMapped]
