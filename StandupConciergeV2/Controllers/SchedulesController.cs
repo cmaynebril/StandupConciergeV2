@@ -9,23 +9,22 @@ using StandupConciergeV2.Models;
 
 namespace StandupConciergeV2.Controllers
 {
-    public class QuestionsController : Controller
+    public class SchedulesController : Controller
     {
         private readonly StandupConciergeContext _context;
 
-        public QuestionsController(StandupConciergeContext context)
+        public SchedulesController(StandupConciergeContext context)
         {
             _context = context;
         }
 
-        // GET: Questions
+        // GET: Schedules
         public async Task<IActionResult> Index()
         {
-            var standupConciergeContext = _context.Questions.Include(q => q.Schedule);
-            return View(await standupConciergeContext.ToListAsync());
+            return View(await _context.Schedules.ToListAsync());
         }
 
-        // GET: Questions/Details/5
+        // GET: Schedules/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,42 +32,39 @@ namespace StandupConciergeV2.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions
-                .Include(q => q.Schedule)
+            var schedule = await _context.Schedules
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (question == null)
+            if (schedule == null)
             {
                 return NotFound();
             }
 
-            return View(question);
+            return View(schedule);
         }
 
-        // GET: Questions/Create
+        // GET: Schedules/Create
         public IActionResult Create()
         {
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id");
             return View();
         }
 
-        // POST: Questions/Create
+        // POST: Schedules/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ScheduleId")] Question question)
+        public async Task<IActionResult> Create([Bind("Id,date,time,frequency,day")] Schedule schedule)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(question);
+                _context.Add(schedule);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", question.ScheduleId);
-            return View(question);
+            return View(schedule);
         }
 
-        // GET: Questions/Edit/5
+        // GET: Schedules/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -76,23 +72,22 @@ namespace StandupConciergeV2.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions.FindAsync(id);
-            if (question == null)
+            var schedule = await _context.Schedules.FindAsync(id);
+            if (schedule == null)
             {
                 return NotFound();
             }
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", question.ScheduleId);
-            return View(question);
+            return View(schedule);
         }
 
-        // POST: Questions/Edit/5
+        // POST: Schedules/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ScheduleId")] Question question)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,date,time,frequency,day")] Schedule schedule)
         {
-            if (id != question.Id)
+            if (id != schedule.Id)
             {
                 return NotFound();
             }
@@ -101,12 +96,12 @@ namespace StandupConciergeV2.Controllers
             {
                 try
                 {
-                    _context.Update(question);
+                    _context.Update(schedule);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!QuestionExists(question.Id))
+                    if (!ScheduleExists(schedule.Id))
                     {
                         return NotFound();
                     }
@@ -117,11 +112,10 @@ namespace StandupConciergeV2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", question.ScheduleId);
-            return View(question);
+            return View(schedule);
         }
 
-        // GET: Questions/Delete/5
+        // GET: Schedules/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -129,31 +123,31 @@ namespace StandupConciergeV2.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions
-                .Include(q => q.Schedule)
+            var schedule = await _context.Schedules
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (question == null)
+            if (schedule == null)
             {
                 return NotFound();
             }
 
-            return View(question);
+            return View(schedule);
         }
 
-        // POST: Questions/Delete/5
+        // POST: Schedules/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var question = await _context.Questions.FindAsync(id);
-            _context.Questions.Remove(question);
+            var schedule = await _context.Schedules.FindAsync(id);
+            _context.Schedules.Remove(schedule);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool QuestionExists(int id)
+        private bool ScheduleExists(int id)
         {
-            return _context.Questions.Any(e => e.Id == id);
+            return _context.Schedules.Any(e => e.Id == id);
         }
+        
     }
 }

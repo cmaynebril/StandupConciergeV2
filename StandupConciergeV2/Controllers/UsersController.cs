@@ -9,23 +9,22 @@ using StandupConciergeV2.Models;
 
 namespace StandupConciergeV2.Controllers
 {
-    public class QuestionsController : Controller
+    public class UsersController : Controller
     {
         private readonly StandupConciergeContext _context;
 
-        public QuestionsController(StandupConciergeContext context)
+        public UsersController(StandupConciergeContext context)
         {
             _context = context;
         }
 
-        // GET: Questions
+        // GET: Users
         public async Task<IActionResult> Index()
         {
-            var standupConciergeContext = _context.Questions.Include(q => q.Schedule);
-            return View(await standupConciergeContext.ToListAsync());
+            return View(await _context.Users.ToListAsync());
         }
 
-        // GET: Questions/Details/5
+        // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,42 +32,39 @@ namespace StandupConciergeV2.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions
-                .Include(q => q.Schedule)
+            var user = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (question == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(question);
+            return View(user);
         }
 
-        // GET: Questions/Create
+        // GET: Users/Create
         public IActionResult Create()
         {
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id");
             return View();
         }
 
-        // POST: Questions/Create
+        // POST: Users/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ScheduleId")] Question question)
+        public async Task<IActionResult> Create([Bind("Id,Name,EmailAdd")] User user)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(question);
+                _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", question.ScheduleId);
-            return View(question);
+            return View(user);
         }
 
-        // GET: Questions/Edit/5
+        // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -76,23 +72,22 @@ namespace StandupConciergeV2.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions.FindAsync(id);
-            if (question == null)
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", question.ScheduleId);
-            return View(question);
+            return View(user);
         }
 
-        // POST: Questions/Edit/5
+        // POST: Users/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ScheduleId")] Question question)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,EmailAdd")] User user)
         {
-            if (id != question.Id)
+            if (id != user.Id)
             {
                 return NotFound();
             }
@@ -101,12 +96,12 @@ namespace StandupConciergeV2.Controllers
             {
                 try
                 {
-                    _context.Update(question);
+                    _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!QuestionExists(question.Id))
+                    if (!UserExists(user.Id))
                     {
                         return NotFound();
                     }
@@ -117,11 +112,10 @@ namespace StandupConciergeV2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", question.ScheduleId);
-            return View(question);
+            return View(user);
         }
 
-        // GET: Questions/Delete/5
+        // GET: Users/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -129,31 +123,30 @@ namespace StandupConciergeV2.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions
-                .Include(q => q.Schedule)
+            var user = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (question == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(question);
+            return View(user);
         }
 
-        // POST: Questions/Delete/5
+        // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var question = await _context.Questions.FindAsync(id);
-            _context.Questions.Remove(question);
+            var user = await _context.Users.FindAsync(id);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool QuestionExists(int id)
+        private bool UserExists(int id)
         {
-            return _context.Questions.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }
