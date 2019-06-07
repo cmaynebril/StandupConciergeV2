@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace StandupConciergeV2.Models
 {
-    public class User
+    public class User : IdentityUser <int>
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string EmailAdd { get; set; }
+       
     }
+
 }
