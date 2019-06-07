@@ -20,8 +20,8 @@
                         <div class="col-3">
                             @*<input id="datepicker" />*@
                             <div class="form-group">
-                                <input asp-for="StartDay" type="text" id="datepicker" />
-                                <span asp-validation-for="StartDay" class="text-danger"></span>
+                                <input asp-for="date" type="text" id="datepicker" />
+                                <span asp-validation-for="date" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-9">
@@ -41,8 +41,8 @@
                                 <div class="col-3">
                                     @*<input id="timepicker" />*@
                                     <div class="form-group">
-                                        <input asp-for="TimeOccur" type="text" id="timepicker" />
-                                        <span asp-validation-for="TimeOccur" class="text-danger"></span>
+                                        <input asp-for="time" type="text" id="timepicker" />
+                                        <span asp-validation-for="time" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-7">
@@ -87,7 +87,7 @@
 
 
                                 <div class="col-2">
-                                    <select asp-for="FrequencyOccur" class="form-control">
+                                    <select asp-for="frequency" class="form-control">
                                         <option value="Weekly">Every Week</option>
                                         <option value="Monthly">Every Month</option>
                                         <option value="Yearly">Every Year</option>
